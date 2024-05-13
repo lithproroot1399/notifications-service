@@ -3,14 +3,19 @@ import { NotificationsRepository } from "@application/repositories/notifications
 
 export class InMemoryNotificationsRepository 
     implements  NotificationsRepository  
-{
-    findById(notificationId: string): Promise<Notification> {
-        throw new Error("Method not implemented.");
-    }  
+{   
     public notifications: Notification[] = [];
-  
+ 
+    async findById(notificationId: string): Promise<Notification> {
+        throw new Error("Method not implemented.");
+    } 
+    
     async create(notification: Notification) {
-    this.notifications.push(notification);
-
-    }
+        this.notifications.push(notification);
+    
+        }    
+    
+    save(notification: Notification): Promise<void> {
+        throw new Error("Method not implemented.");
+    }    
 }
