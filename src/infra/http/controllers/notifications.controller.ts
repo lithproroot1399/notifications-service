@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateNotificationBody } from '../dtos/create-notification-body';
 import { SendNotification } from '@application/use-cases/send-notification';
 import { NotificationViewModel } from '../view-models/notification-view.modul';
@@ -28,9 +28,29 @@ async cancel(
     });
   }
 
-async countFromRecipient() {}
+  @Get('count/from/:recipientId')
+async countFromRecipient(@Param('recipientId') recipientId: string,
+): Promise<{ count: number}> {
+  const { count } = await this.countRecipientNotifications.execute({
+    recipientId,
+  });
 
-async getFromRecipient() {}
+    return {
+      count,
+    };
+}
+
+@Get('from/:recipientId')
+async getFromRecipient(@Param('recipientId') recipientId: string,
+) {
+  const { notifications } = await this.getRecipientNotifications.execute({
+    recipientId,
+  });
+
+    return {
+      notifications: notifications.map(NotificationViewModel.toHTTP),
+    };
+}
 
 @Patch(':id/read')
 async read(
